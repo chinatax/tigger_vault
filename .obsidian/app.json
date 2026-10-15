@@ -1,0 +1,11 @@
+{
+  "useMarkdownLinks": false,
+  "newLinkFormat": "shortest",
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "raw/images",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "raw/notes",
+  "showUnsupportedFiles": false,
+  "promptDelete": true,
+  "trashOption": "local"
+}

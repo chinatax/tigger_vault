@@ -1,0 +1,1100 @@
+<title>税务知识库架构</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F8FAFB;
+  --surface:#FFFFFF;
+  --surface-2:#F0F4F6;
+  --ink:#161B21;
+  --ink-2:#5C6871;
+  --ink-3:#8E989F;
+  --rule:#E1E8EC;
+  --rule-strong:#C6D0D6;
+  --accent:#1A5468;
+  --accent-2:#2E8199;
+  --seal:#A63A2C;
+  --ok:#2E6B52;
+  --shadow:0 1px 2px rgba(20,30,40,.04), 0 8px 24px rgba(20,30,40,.035);
+
+  --f-display:"Noto Serif SC","Songti SC","SimSun",Georgia,serif;
+  --f-body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;
+
+  --fs-hero:clamp(2.5rem,6.4vw,4.3rem);
+  --fs-h2:clamp(1.5rem,3.1vw,2.05rem);
+  --fs-h3:1.02rem;
+  --fs-body:1rem;
+  --fs-sm:.875rem;
+  --fs-xs:.78rem;
+
+  --gut:clamp(20px,5vw,72px);
+  --maxw:1080px;
+}
+/* 单一浅色主题——不随系统深色模式切换（2026-10-12 依用户要求） */
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:var(--fs-body);
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+
+.deck{scroll-snap-type:y proximity}
+@media (prefers-reduced-motion:no-preference){
+  .deck{scroll-behavior:smooth}
+}
+
+.slide{
+  min-height:100svh;
+  scroll-snap-align:start;
+  display:grid;
+  align-content:center;
+  padding-block:clamp(56px,9vh,104px);
+  padding-inline:var(--gut);
+  border-bottom:1px solid var(--rule);
+}
+.slide-inner{width:100%;max-width:var(--maxw);margin-inline:auto}
+
+.eyebrow{
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  display:flex;
+  align-items:center;
+  gap:.75em;
+  margin:0 0 1.5rem;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+.eyebrow b{color:var(--accent);font-weight:500}
+
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h2{
+  font-size:var(--fs-h2);
+  font-weight:700;
+  line-height:1.32;
+  letter-spacing:-.005em;
+  margin-bottom:.55rem;
+}
+.lede{
+  color:var(--ink-2);
+  font-size:var(--fs-sm);
+  max-width:64ch;
+  margin:0 0 2.4rem;
+}
+h3{font-size:var(--fs-h3);font-weight:600;line-height:1.5}
+
+code,.mono{font-family:var(--f-mono);font-size:.87em}
+code{
+  background:var(--surface-2);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:.08em .38em;
+  white-space:nowrap;
+}
+
+a{color:var(--accent-2)}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:2px}
+
+/* ── cover ── */
+.cover h1{
+  font-size:var(--fs-hero);
+  font-weight:700;
+  line-height:1.08;
+  letter-spacing:-.015em;
+  margin:0 0 1.1rem;
+}
+.cover .tagline{
+  font-family:var(--f-display);
+  font-size:clamp(1rem,1.9vw,1.3rem);
+  color:var(--ink-2);
+  margin:0 0 3rem;
+  max-width:36ch;
+  line-height:1.7;
+}
+.cover-rule{height:2px;background:var(--accent);width:68px;margin:0 0 2.4rem;border-radius:1px}
+
+.figrow{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:1px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+  border-radius:6px;
+  overflow:hidden;
+}
+.fig{background:var(--surface);padding:1.15rem 1.25rem}
+.fig b{
+  display:block;
+  font-family:var(--f-mono);
+  font-size:clamp(1.35rem,2.6vw,1.75rem);
+  font-weight:500;
+  color:var(--accent);
+  line-height:1.2;
+  font-variant-numeric:tabular-nums;
+}
+.fig span{font-size:var(--fs-xs);color:var(--ink-2);display:block;margin-top:.3rem;letter-spacing:.02em}
+
+/* ── helpers ── */
+.cols{display:grid;gap:2.2rem}
+@media (min-width:820px){
+  .cols-2{grid-template-columns:1fr 1fr}
+  .cols-3{grid-template-columns:repeat(3,1fr)}
+  .cols-32{grid-template-columns:1.35fr 1fr}
+}
+
+.panel{
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:6px;
+  padding:1.4rem 1.5rem;
+}
+.panel > h3{margin-bottom:.85rem}
+.panel p{margin:0;font-size:var(--fs-sm);color:var(--ink-2)}
+
+ul.plain{list-style:none;padding:0;margin:0}
+ul.plain li{
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+  padding:.5rem 0 .5rem 1.15rem;
+  position:relative;
+  border-bottom:1px solid var(--rule);
+}
+ul.plain li:last-child{border-bottom:0}
+ul.plain li::before{
+  content:"";
+  position:absolute;
+  left:0;top:1.02em;
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--accent-2);
+}
+ul.plain li b{color:var(--ink);font-weight:500}
+
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:0}
+ol.steps li{
+  counter-increment:s;
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+  padding:.55rem 0 .55rem 2rem;
+  position:relative;
+  border-bottom:1px solid var(--rule);
+}
+ol.steps li:last-child{border-bottom:0}
+ol.steps li::before{
+  content:counter(s,decimal-leading-zero);
+  position:absolute;
+  left:0;top:.62rem;
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  color:var(--accent);
+}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+/* ── tables ── */
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:var(--fs-sm);min-width:480px}
+th,td{text-align:left;padding:.72rem .95rem;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  font-weight:500;
+  background:var(--surface-2);
+  white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td strong{font-weight:500;color:var(--ink)}
+.tight-lead th:first-child,.tight-lead td:first-child{white-space:nowrap}
+.yes{color:var(--ok);font-weight:500}
+.no{color:var(--seal);font-weight:500}
+.dim{color:var(--ink-3)}
+
+.chip{
+  display:inline-block;
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  letter-spacing:.04em;
+  padding:.16em .55em;
+  border-radius:3px;
+  border:1px solid var(--rule-strong);
+  color:var(--ink-2);
+  white-space:nowrap;
+}
+.chip.on{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+.chip.off{color:var(--seal);border-color:color-mix(in srgb,var(--seal) 45%,transparent)}
+
+/* ── figures ── */
+figure{margin:0}
+figure svg{display:block;width:100%;max-width:100%;height:auto;color:var(--ink-2)}
+figcaption{
+  font-size:var(--fs-xs);
+  color:var(--ink-3);
+  margin-top:1rem;
+  line-height:1.6;
+  max-width:74ch;
+}
+.svg-label{font-family:var(--f-body);font-size:13px;fill:currentColor}
+.svg-mono{font-family:var(--f-mono);font-size:11.5px;fill:currentColor}
+.svg-name{font-family:var(--f-mono);font-size:14px;font-weight:500}
+.svg-title{font-family:var(--f-display);font-size:13.5px;font-weight:600}
+
+/* ── contracts ── */
+.contracts{
+  display:grid;
+  gap:1px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+  border-radius:6px;
+  overflow:hidden;
+  grid-template-columns:1fr;
+}
+@media (min-width:760px){.contracts{grid-template-columns:1fr 1fr}}
+.contract{background:var(--surface);padding:1.15rem 1.35rem;display:flex;gap:1rem;align-items:flex-start}
+.contract .n{
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  color:var(--accent);
+  padding-top:.28em;
+  letter-spacing:.06em;
+  flex:none;
+}
+.contract h3{margin-bottom:.2rem;font-size:.98rem}
+.contract p{margin:0;font-size:var(--fs-xs);color:var(--ink-2);line-height:1.65}
+
+/* ── notes ── */
+.note{
+  border-left:2px solid var(--seal);
+  padding:.15rem 0 .15rem 1.1rem;
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+}
+.note b{color:var(--seal);font-weight:500}
+.note.accent{border-color:var(--accent-2)}
+.note.accent b{color:var(--accent)}
+
+.quote{
+  font-family:var(--f-display);
+  font-size:clamp(1.15rem,2.4vw,1.6rem);
+  line-height:1.6;
+  color:var(--ink);
+  border-left:2px solid var(--accent-2);
+  padding-left:1.3rem;
+  margin:0 0 2.4rem;
+  max-width:30ch;
+}
+.quote small{
+  display:block;
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  color:var(--ink-3);
+  margin-top:.9rem;
+  letter-spacing:.04em;
+}
+.src{
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  color:var(--ink-3);
+  line-height:1.95;
+  margin:-1.4rem 0 2.4rem;
+  overflow-wrap:anywhere;
+}
+
+/* ── chrome ── */
+.progress{position:fixed;inset:0 0 auto 0;height:2px;background:var(--rule);z-index:20}
+.progress i{display:block;height:100%;width:0;background:var(--accent-2);transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){.progress i{transition:none}}
+
+.counter{
+  position:fixed;
+  right:clamp(12px,2vw,22px);
+  bottom:clamp(12px,2vw,20px);
+  z-index:20;
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  letter-spacing:.08em;
+  color:var(--ink-2);
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:999px;
+  padding:.3rem .8rem;
+  font-variant-numeric:tabular-nums;
+  box-shadow:var(--shadow);
+}
+.counter b{color:var(--accent);font-weight:500}
+.hint{
+  position:fixed;
+  left:clamp(12px,2vw,22px);
+  bottom:clamp(12px,2vw,20px);
+  z-index:20;
+  font-family:var(--f-mono);
+  font-size:var(--fs-xs);
+  color:var(--ink-3);
+  letter-spacing:.05em;
+}
+@media (max-width:640px){.hint{display:none}}
+
+@media print{
+  .slide{min-height:0;page-break-after:always;border:0}
+  .progress,.counter,.hint{display:none}
+}
+</style>
+
+<div class="progress"><i id="bar"></i></div>
+<div class="hint">↑ ↓ 翻页</div>
+<div class="counter"><b id="cur">01</b> / <span id="tot">01</span></div>
+
+<main class="deck" id="deck">
+
+  <!-- 01 ── cover ─────────────────────────────────── -->
+  <section class="slide cover">
+    <div class="slide-inner">
+      <p class="eyebrow">系统架构梳理 · <span>2026-10-12</span></p>
+      <h1>税务知识库<br>架构与组件</h1>
+      <div class="cover-rule"></div>
+      <p class="tagline">一个人拥有原始材料、LLM 拥有知识层的双层结构，配上可溯源的检索后端与六条操作契约。骨架取自 Karpathy 的 llm-wiki 模式。</p>
+      <div class="figrow">
+        <div class="fig"><b>503</b><span>wiki 内容页</span></div>
+        <div class="fig"><b>5,259</b><span>向量块</span></div>
+        <div class="fig"><b>29</b><span>来源页</span></div>
+        <div class="fig"><b>466</b><span>概念页</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ── 三层架构 ───────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>01</b> 总览 · 三层结构</p>
+      <h2>权限边界决定了一切</h2>
+      <p class="lede">这套系统的核心不是目录树，而是三个人为划定的边界：谁能写、谁只能读、什么绝不回流。</p>
+      <figure>
+        <svg viewBox="0 0 920 316" role="img" aria-label="三层架构图：raw 原始层单向流向 wiki 知识层，再流向 outputs 产物层；从 wiki 回写 raw 的路径被明确标为禁止；scripts 工具层以虚线作用于全库，不拥有任何内容。">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+            </marker>
+            <marker id="ar-seal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <rect x="30" y="58" width="220" height="94" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text class="svg-mono svg-label" x="50" y="88" fill="currentColor" style="font-size:15px;font-weight:500">raw/</text>
+          <text class="svg-label" x="50" y="112" fill="currentColor">原始层 · 人类拥有</text>
+          <text class="svg-label" x="50" y="134" fill="currentColor" opacity=".72">LLM 只读，绝不改写</text>
+
+          <rect x="350" y="58" width="220" height="94" rx="5" fill="none" stroke="var(--accent-2)" stroke-width="1.5"/>
+          <text class="svg-mono svg-label" x="370" y="88" fill="var(--accent-2)" style="font-size:15px;font-weight:500">wiki/</text>
+          <text class="svg-label" x="370" y="112" fill="currentColor">知识层 · LLM 拥有</text>
+          <text class="svg-label" x="370" y="134" fill="currentColor" opacity=".72">全权读写</text>
+
+          <rect x="670" y="58" width="220" height="94" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text class="svg-mono svg-label" x="690" y="88" fill="currentColor" style="font-size:15px;font-weight:500">outputs/</text>
+          <text class="svg-label" x="690" y="112" fill="currentColor">产物层</text>
+          <text class="svg-label" x="690" y="134" fill="currentColor" opacity=".72">报告 · 图表 · 本页</text>
+
+          <line x1="250" y1="105" x2="342" y2="105" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+          <text class="svg-label" x="296" y="95" fill="currentColor" text-anchor="middle" opacity=".8">摄取</text>
+
+          <line x1="570" y1="105" x2="662" y2="105" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+          <text class="svg-label" x="616" y="95" fill="currentColor" text-anchor="middle" opacity=".8">产出</text>
+
+          <path d="M 460 158 L 460 208 L 148 208 L 148 162" fill="none" stroke="var(--seal)" stroke-width="1.5"
+                stroke-dasharray="5 4" marker-end="url(#ar-seal)"/>
+          <circle cx="304" cy="208" r="11" fill="var(--bg)"/>
+          <path d="M 298 202 L 310 214 M 310 202 L 298 214" stroke="var(--seal)" stroke-width="1.8" stroke-linecap="round"/>
+          <text class="svg-label" x="330" y="213" fill="var(--seal)" style="font-size:12.5px">禁止写入 raw/</text>
+
+          <rect x="30" y="252" width="860" height="48" rx="5" fill="var(--surface-2)" stroke="var(--rule-strong)" stroke-width="1" stroke-dasharray="4 3"/>
+          <text class="svg-mono svg-label" x="50" y="282" fill="currentColor" style="font-weight:500">scripts/</text>
+          <text class="svg-label" x="132" y="282" fill="currentColor" opacity=".78">工具层 — lint.py · qmd-lite · ocr_pdf.py · import-zcfgk-raw.py（作用于两侧，不拥有任何内容）</text>
+        </svg>
+        <figcaption>实线是内容流向，虚线是工具的作用关系；红色虚线是被明确禁止的回流——wiki 的结论永远不能改写 raw 的原始材料，因为 raw 是唯一事实来源。</figcaption>
+      </figure>
+      <p class="note accent" style="margin-top:1.8rem">
+        <b>一处命名差异值得留意：</b>Karpathy 原本划的第三层是 <strong style="color:var(--ink);font-weight:500">schema（规则层）</strong>——即 <code>CLAUDE.md</code>，
+        它把「通用聊天机器人」变成「守规矩的 wiki 维护员」。本库把 <code>outputs/</code> 也并列为第三层。两者在本库中其实都在：
+        <code>CLAUDE.md</code> 是 schema，<code>outputs/</code> 是产物出口。
+      </p>
+    </div>
+  </section>
+
+  <!-- 03 ── 设计谱系 ───────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>02</b> 设计谱系 · Karpathy 的 llm-wiki</p>
+      <h2>这套结构不是原创</h2>
+      <p class="lede">
+        2026 年 4 月，Andrej Karpathy 在 X 上公开了自己的个人知识库工作流，随后放出一份 gist——<code>llm-wiki.md</code>，
+        一份刻意写得抽象的<strong style="color:var(--ink);font-weight:500">「想法文件」</strong>：不是代码、不是产品，而是让人粘进 agent
+        （Claude Code / Codex 等）自行实例化到自己的领域。本库的三层结构与操作契约都沿用它。
+      </p>
+      <p class="quote">Obsidian 是 IDE，<br>LLM 是程序员，<br>Wiki 是代码库。<small>—— Karpathy · llm-wiki gist</small></p>
+      <p class="src">gist.github.com/karpathy/442a6bf555914893e9891c11519de94f &nbsp;·&nbsp; X 帖 x.com/i/status/2039805659525644595</p>
+      <figure>
+        <svg viewBox="0 0 820 292" role="img" aria-label="对比图：RAG 每次查询都现场推导答案且用完丢弃；LLM Wiki 只在摄入时编译一次，之后持续维护 Wiki 层，答案持久化保存。">
+          <defs>
+            <marker id="cr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <!-- RAG row -->
+          <text class="svg-mono" x="14" y="78" fill="currentColor" opacity=".62" style="font-size:12px;letter-spacing:.06em">RAG</text>
+          <rect x="96" y="50" width="84" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="138" y="78" fill="currentColor" text-anchor="middle">问题</text>
+          <line x1="180" y1="72" x2="212" y2="72" stroke="currentColor" stroke-width="1.4" marker-end="url(#cr)"/>
+          <rect x="218" y="50" width="108" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="272" y="78" fill="currentColor" text-anchor="middle">检索片段</text>
+          <line x1="326" y1="72" x2="358" y2="72" stroke="currentColor" stroke-width="1.4" marker-end="url(#cr)"/>
+          <rect x="364" y="50" width="124" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="426" y="78" fill="currentColor" text-anchor="middle">LLM 现场推导</text>
+          <line x1="488" y1="72" x2="520" y2="72" stroke="currentColor" stroke-width="1.4" marker-end="url(#cr)"/>
+          <rect x="526" y="50" width="84" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="568" y="78" fill="currentColor" text-anchor="middle">答案</text>
+          <line x1="610" y1="72" x2="650" y2="72" stroke="currentColor" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#cr)"/>
+          <text class="svg-label" x="660" y="78" fill="var(--seal)" opacity=".85">丢弃</text>
+          <text class="svg-mono" x="426" y="116" fill="currentColor" text-anchor="middle" opacity=".62" style="font-size:11px">每次查询重来一遍</text>
+
+          <!-- divider -->
+          <line x1="14" y1="146" x2="806" y2="146" stroke="currentColor" stroke-width="1" opacity=".25"/>
+
+          <!-- LLM Wiki row -->
+          <text class="svg-mono" x="14" y="224" fill="var(--accent-2)" style="font-size:12px;letter-spacing:.06em">LLM WIKI</text>
+          <rect x="96" y="196" width="84" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="138" y="224" fill="currentColor" text-anchor="middle">来源</text>
+          <line x1="180" y1="218" x2="212" y2="218" stroke="currentColor" stroke-width="1.4" marker-end="url(#cr)"/>
+          <rect x="218" y="196" width="108" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="272" y="224" fill="currentColor" text-anchor="middle">LLM 编译</text>
+          <line x1="326" y1="218" x2="358" y2="218" stroke="currentColor" stroke-width="1.4" marker-end="url(#cr)"/>
+          <rect x="364" y="196" width="124" height="44" rx="5" fill="none" stroke="var(--accent-2)" stroke-width="1.7"/>
+          <text class="svg-label" x="426" y="224" fill="var(--accent-2)" text-anchor="middle">Wiki 层</text>
+          <line x1="488" y1="218" x2="520" y2="218" stroke="currentColor" stroke-width="1.4" marker-end="url(#cr)"/>
+          <rect x="526" y="196" width="84" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="568" y="224" fill="currentColor" text-anchor="middle">答案</text>
+          <line x1="610" y1="218" x2="650" y2="218" stroke="var(--accent-2)" stroke-width="1.4" marker-end="url(#cr)"/>
+          <text class="svg-label" x="660" y="224" fill="var(--accent-2)">持久化</text>
+          <text class="svg-mono" x="426" y="262" fill="var(--accent-2)" text-anchor="middle" opacity=".85" style="font-size:11px">编译一次 · 持续维护</text>
+        </svg>
+        <figcaption>Karpathy 的原话：「the LLM is rediscovering knowledge from scratch on every question. <strong>There's no accumulation.</strong>」——每个问题都从零重新发现知识，没有积累。llm-wiki 把理解提前编译进知识层，查询只负责读取；本库的 <code>wiki/concepts/</code> 就是那层被编译出来的产物。</figcaption>
+      </figure>
+      <p class="note accent" style="margin-top:1.8rem">
+        <b>闭环：</b>他 gist 里列的工具之一就是 <code>qmd</code>（本地 Markdown 混合检索：BM25 + 向量 + LLM 重排，Tobi Lütke 作）——
+        <strong style="color:var(--ink);font-weight:500">本库的检索后端正是它</strong>。整条链路可上溯到这份 gist。
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 ── 保留与偏离 ─────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>03</b> 演化 · gist → 本库</p>
+      <h2>沿用骨架，改掉不合身的地方</h2>
+      <p class="lede">
+        参照物是 Karpathy 的原始 gist，以及本机那份由它派生的《LLM Wiki 搭建教程》（30 页）。
+        gist 给的是通用模式，教程给的是通用模板；本库在实作中按实际语料改动了这些——
+        <strong style="color:var(--ink);font-weight:500">骨架（raw 只读、wiki 全权、schema 即 CLAUDE.md、Confidence 门控）原样保留</strong>。
+      </p>
+      <div class="tw">
+        <table class="tight-lead">
+          <thead>
+            <tr><th>环节</th><th>教程</th><th>本库</th><th>为什么改</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>操作集</strong></td>
+              <td class="dim">3 条：Ingest / Query / Lint<br><span style="font-size:.92em">（答案回填并入 Query）</span></td>
+              <td>6 条：+ REFLECT<br>+ MERGE · + ADD-QUESTION</td>
+              <td>教材与题库规模下需要跨来源合成、去重，以及一个待解答的问题队列</td>
+            </tr>
+            <tr>
+              <td><strong>LINT 检查项</strong></td>
+              <td class="dim">9 项</td>
+              <td>10 项</td>
+              <td>补「引用一致性」反向核对——页面存在、也登记了，但可能<strong>指错了书</strong>，断链与索引检查都看不见</td>
+            </tr>
+            <tr>
+              <td><strong>QUERY 检索</strong></td>
+              <td class="dim"><code>qmd query</code> 全量</td>
+              <td>自写 vec + lex<br><code>--no-rerank</code></td>
+              <td>本机是无 GPU 虚拟机，全量一次 <strong>19 分 47 秒</strong></td>
+            </tr>
+            <tr>
+              <td><strong>raw/ 组织</strong></td>
+              <td class="dim">按介质：articles / clippings / pdfs / notes</td>
+              <td>按内容类型：题库 / 公文 / 制度 / 代码表 / 教材</td>
+              <td>一份公文 PDF 属于公文而非 pdfs，只看路径判定会失准</td>
+            </tr>
+            <tr>
+              <td><strong>来源计数</strong></td>
+              <td class="dim">每份材料算一个来源</td>
+              <td>只数<strong>去重后的 raw 文件</strong></td>
+              <td>否则一份材料能自己给自己凑够三个来源，置信度虚高</td>
+            </tr>
+            <tr>
+              <td><strong>实体层收录</strong></td>
+              <td class="dim">person / tool / institution / paper</td>
+              <td>只收<strong>机构</strong> + 建库早期的法规</td>
+              <td>法规的内容已由概念专页承载，再建实体页只是第二个入口</td>
+            </tr>
+            <tr>
+              <td><strong>近重复检测</strong></td>
+              <td class="dim">Jaccard &gt; 0.7 即报</td>
+              <td>另附一张<strong>已裁定误报</strong>表</td>
+              <td>平行命名家族（应税 / 视同应税 / 不属于应税）是法律自身的结构，不能为迁就启发式而合并</td>
+            </tr>
+            <tr>
+              <td><strong>扫描件处理</strong></td>
+              <td class="dim">无</td>
+              <td>新增 PDF / OCR 流程</td>
+              <td>教材是扫描件，且 OCR 文本必然有识别错误，须分档标注来源可靠性</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:1.8rem">
+        <b>有一处本库已经越过了他的前提。</b>Karpathy 说在他的规模下（约 100 个来源、数百页），光靠 <code>index.md</code> 就够用，
+        <strong style="color:var(--ink);font-weight:500">不需要基于嵌入的 RAG 基础设施</strong>。本库已有 506 页 / 5,259 块——远过那条线，
+        因此必须上向量检索。这也解释了为什么本库的检索栈比 gist 描述的复杂得多。
+      </p>
+    </div>
+  </section>
+
+  <!-- 05 ── raw 层 ─────────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>04</b> raw/ 原始层</p>
+      <h2>按内容类型归置的原始材料</h2>
+      <p class="lede">这一层由人拥有。LLM 只能读取，不能修改、不能重命名、不能删除。</p>
+      <div class="cols cols-2">
+        <div>
+          <h3 style="margin-bottom:.7rem">主维度 · 按内容类型</h3>
+          <ul class="plain">
+            <li><b>题库/</b> — 28 份（CTA 必刷 550 题五科 · 岗位集中测试 23 条线）</li>
+            <li><b>教材/text/</b> — 5 本 OCR 文本：税法一 · 税法二 · 涉税实务 · 涉税法律 · 财务与会计</li>
+            <li><b>制度/</b> — 政策法规语料约 4,886 篇</li>
+            <li><b>代码表/ · 公文/ · 个人写作/</b> — 各按用途备位</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin-bottom:.7rem">保留的介质类目录</h3>
+          <ul class="plain">
+            <li><b>clippings/</b> — 剪藏片段，含「一人公司涉税风险」专题 8 篇</li>
+            <li><b>pdfs/ · images/ · notes/</b> — 原始介质与随手笔记</li>
+          </ul>
+          <div class="note accent" style="margin-top:1.6rem">
+            <b>判定以 frontmatter 的 <code>type</code> 为主、路径仅作兜底</b>——同样一份公文 PDF 可能落在不同目录，只看路径会失准。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 ── wiki 层 ────────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>05</b> wiki/ 知识层</p>
+      <h2>五类页面，各司其职</h2>
+      <p class="lede">知识层由 LLM 全权读写。每个页面只承担一种角色，不混合。</p>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th>目录</th><th>角色</th><th>是什么</th><th class="num">页数</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>sources/</code></td><td><strong>来源页</strong></td><td>一份原始材料 = 一页，是全部结论的唯一溯源依据</td><td class="num">29</td></tr>
+            <tr><td><code>concepts/</code></td><td><strong>概念页</strong></td><td>跨来源沉淀的认知单元，如「土地增值税清算」</td><td class="num">466</td></tr>
+            <tr><td><code>entities/</code></td><td><strong>实体页</strong></td><td>机构与建库早期的规范性文件</td><td class="num">6</td></tr>
+            <tr><td><code>synthesis/</code></td><td><strong>合成页</strong></td><td>REFLECT 产出的跨来源结论</td><td class="num">2</td></tr>
+            <tr><td><code>templates/</code></td><td class="dim">模板</td><td>页面骨架，不是内容页</td><td class="num dim">5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:var(--fs-sm);color:var(--ink-2);margin:1.5rem 0 0">
+        另有四个系统文件——<code>index.md</code>、<code>log.md</code>、<code>overview.md</code>、<code>QUESTIONS.md</code>，
+        以及 <code>outputs/</code> 下的报告产物。<strong style="color:var(--ink);font-weight:500">它们全部带 <code>graph-excluded: true</code></strong>，
+        由 Obsidian 图谱过滤器排除，不污染知识图谱。
+      </p>
+    </div>
+  </section>
+
+  <!-- 07 ── 规模 ───────────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>06</b> 规模 · 实测于 2026-10-12</p>
+      <h2>这是一座概念密集型的库</h2>
+      <p class="lede">页面构成决定了检索与维护的策略：概念多、来源少，是「深耕式」而非「广采式」的知识库。</p>
+      <div class="cols cols-32">
+        <div class="figrow" style="grid-template-columns:1fr 1fr">
+          <div class="fig"><b>466</b><span>概念页</span></div>
+          <div class="fig"><b>29</b><span>来源页</span></div>
+          <div class="fig"><b>506</b><span>索引文件</span></div>
+          <div class="fig"><b>5,259</b><span>向量块</span></div>
+          <div class="fig"><b>44.9<small style="font-size:.5em"> MB</small></b><span>索引体积</span></div>
+          <div class="fig"><b>16 : 1</b><span>概念 / 来源</span></div>
+        </div>
+        <div>
+          <div class="panel">
+            <h3>由此带来的结构特征</h3>
+            <p style="margin-bottom:.9rem">
+              单一来源的概念页占比很高——按最近一次 LINT 与 Gap 报告，约 <strong style="color:var(--ink);font-weight:500">78%</strong> 的概念页
+              <code>source_count = 1</code>。这是本库最突出的结构性特征，也是每次摄入都在缓解的问题。
+            </p>
+            <p>
+              因此来源独立性被严格定义：<code>source_count</code> 只数<strong style="color:var(--ink);font-weight:500">去重后的 raw 文件</strong>——
+              同一本书的不同章节不互相背书。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 ── 检索后端 ───────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>07</b> 检索后端</p>
+      <h2>qmd 与它的三个模型</h2>
+      <p class="lede">
+        后端是官方 <code>qmd 2.8.3</code>（<code>@tobilu/qmd</code>，构建 <code>facd35e</code>），集合 <code>wiki</code>。
+        配了三个本地 GGUF 模型——但<strong style="color:var(--ink);font-weight:500">只有一个真正在跑</strong>。
+      </p>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th>角色</th><th>模型文件</th><th>体积</th><th>用途</th><th>本库是否加载</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>embed</code></td>
+              <td><strong>EmbeddingGemma 300M</strong><br><span class="dim mono">embeddinggemma-300M-Q8_0.gguf</span></td>
+              <td class="num">318 MB</td>
+              <td>把页面切块与问题都转向量化——<strong>检索的语义能力全部来自它</strong></td>
+              <td><span class="chip on">每次检索都加载</span></td>
+            </tr>
+            <tr>
+              <td><code>generate</code></td>
+              <td>Qwen3-0.6B<br><span class="dim mono">Qwen3-0.6B-Q8_0.gguf</span></td>
+              <td class="num">767 MB</td>
+              <td>自动把问题扩写成 <code>vec:</code>/<code>lex:</code> 变体</td>
+              <td><span class="chip off">从不加载</span> <span class="dim">实测只会把原句复读 43 遍，故扩写一律自写</span></td>
+            </tr>
+            <tr>
+              <td><code>rerank</code></td>
+              <td>Qwen3 Reranker 0.6B<br><span class="dim mono">qwen3-reranker-0.6b-q8_0.gguf</span></td>
+              <td class="num">610 MB</td>
+              <td>对候选块逐块做 4096 token 前向，精排</td>
+              <td><span class="chip off">从不加载</span> <span class="dim">本机无 GPU，单这一步要 19 分 47 秒</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:var(--fs-xs);color:var(--ink-3);margin:1.1rem 0 0">
+        三个模型合计约 1.66 GB，全部本地化在 <code>~/.cache/qmd/models/</code>，由全局配置 <code>~/.config/qmd/index.yml</code>
+        以绝对路径引用——检索与嵌入全程不联网。
+      </p>
+    </div>
+  </section>
+
+  <!-- 09 ── 嵌入模型 ───────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>08</b> 语义引擎</p>
+      <h2>EmbeddingGemma 是什么</h2>
+      <p class="lede">Google 2025 年 9 月开源的嵌入模型，主打端侧离线。它把一段文字压成一串坐标——语义相近的文字，坐标也相近。</p>
+      <div class="cols cols-2">
+        <div>
+          <div class="tw">
+            <table style="min-width:0">
+              <tbody>
+                <tr><th style="width:42%">版本</th><td>EmbeddingGemma · 2025-09 发布</td></tr>
+                <tr><th>参数规模</th><td class="num">308M</td></tr>
+                <tr><th>输出维度</th><td class="num">768 维</td></tr>
+                <tr><th>上下文</th><td class="num">2,000 token</td></tr>
+                <tr><th>量化 / 体积</th><td class="num">Q8_0 · 318 MB（GGUF v3）</td></tr>
+                <tr><th>语言</th><td>100+ 种，约 3,200 亿 token 训练</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <h3>同一个模型，两套前缀</h3>
+            <p style="margin-bottom:.9rem">查询和文档要走不同的提示词格式——模型就是按这种格式训练的，前缀给错坐标就偏。</p>
+            <div class="mono" style="font-size:var(--fs-xs);line-height:2;color:var(--ink-2)">
+              <div>查询侧 <span class="dim">→</span> <code>task: search result | query: …</code></div>
+              <div>文档侧 <span class="dim">→</span> <code>title: … | text: …</code></div>
+            </div>
+            <p style="margin-top:.9rem">
+              这也是为什么换 embed 模型会导致全库向量作废——向量的指纹里就含这两个前缀的格式。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:1.8rem">
+        <b>射程有限，且实测可验证。</b>300M 是小模型，中文（非英语）能力相对弱：术语级表述能到 75–100%，别名（「土增税」）尚可，
+        但<strong style="color:var(--ink);font-weight:500">纯口语的迂回说法会失手</strong>——实测「卖房子赚的钱要被国家分走的那一块」三个候选分差只有 2 个百分点，等于在猜。
+        故自写扩写必须贴术语，不能往口语方向放飞。
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ── 检索流水线 ─────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>09</b> 检索流水线</p>
+      <h2>两路召回，融合取前五</h2>
+      <p class="lede">同一个问题同时走语义与字面两条路，各自返回一份排名，再用 RRF 合并。第三段的精排在本库被跳过。</p>
+      <figure>
+        <svg viewBox="0 0 940 330" role="img" aria-label="检索流水线图：问题分成两路，上路经 EmbeddingGemma 向量化后在 5259 块向量中检索，下路经 FTS5 BM25 做字面检索；两路结果由 RRF 融合后输出前五条。第三段精排被虚线绕过并标注为跳过。">
+          <defs>
+            <marker id="br" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <rect x="16" y="142" width="104" height="48" rx="5" fill="var(--surface-2)" stroke="currentColor" stroke-width="1.5"/>
+          <text class="svg-label" x="68" y="172" fill="currentColor" text-anchor="middle" style="font-size:14px">问题</text>
+
+          <path d="M 120 166 L 158 166 L 158 96 L 176 96" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#br)"/>
+          <path d="M 120 166 L 158 166 L 158 236 L 176 236" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#br)"/>
+          <text class="svg-mono" x="140" y="88" fill="currentColor" opacity=".8" style="font-size:11px">vec:</text>
+          <text class="svg-mono" x="140" y="258" fill="currentColor" opacity=".8" style="font-size:11px">lex:</text>
+
+          <rect x="176" y="70" width="196" height="52" rx="5" fill="var(--surface)" stroke="var(--accent-2)" stroke-width="1.5"/>
+          <text class="svg-title" x="192" y="94" fill="currentColor">EmbeddingGemma</text>
+          <text class="svg-mono" x="192" y="112" fill="currentColor" opacity=".75" style="font-size:11px">300M · 768 维</text>
+          <line x1="372" y1="96" x2="404" y2="96" stroke="currentColor" stroke-width="1.4" marker-end="url(#br)"/>
+          <rect x="410" y="70" width="170" height="52" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="426" y="94" fill="currentColor">向量检索</text>
+          <text class="svg-mono" x="426" y="112" fill="currentColor" opacity=".75" style="font-size:11px">5,259 块 · 余弦</text>
+
+          <rect x="176" y="210" width="196" height="52" rx="5" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-title" x="192" y="234" fill="currentColor">FTS5 · BM25</text>
+          <text class="svg-mono" x="192" y="252" fill="currentColor" opacity=".75" style="font-size:11px">中文按字切分</text>
+          <line x1="372" y1="236" x2="404" y2="236" stroke="currentColor" stroke-width="1.4" marker-end="url(#br)"/>
+          <rect x="410" y="210" width="170" height="52" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text class="svg-label" x="426" y="234" fill="currentColor">字面检索</text>
+          <text class="svg-mono" x="426" y="252" fill="currentColor" opacity=".75" style="font-size:11px">短语匹配</text>
+
+          <path d="M 580 96 L 616 96 L 616 166 L 636 166" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#br)"/>
+          <path d="M 580 236 L 616 236 L 616 166" fill="none" stroke="currentColor" stroke-width="1.4"/>
+
+          <rect x="642" y="140" width="140" height="52" rx="5" fill="var(--surface)" stroke="var(--accent-2)" stroke-width="1.5"/>
+          <text class="svg-title" x="712" y="164" fill="currentColor" text-anchor="middle">RRF 融合</text>
+          <text class="svg-mono" x="712" y="182" fill="currentColor" text-anchor="middle" opacity=".75" style="font-size:11px">k = 60</text>
+
+          <line x1="782" y1="166" x2="816" y2="166" stroke="currentColor" stroke-width="1.4" marker-end="url(#br)"/>
+          <rect x="822" y="142" width="102" height="48" rx="5" fill="var(--surface-2)" stroke="currentColor" stroke-width="1.5"/>
+          <text class="svg-label" x="873" y="172" fill="currentColor" text-anchor="middle" style="font-size:14px">前五条</text>
+
+          <path d="M 712 192 L 712 246" fill="none" stroke="var(--seal)" stroke-width="1.3" stroke-dasharray="4 4"/>
+          <rect x="612" y="252" width="200" height="52" rx="5" fill="none" stroke="var(--seal)" stroke-width="1.3" stroke-dasharray="5 4"/>
+          <text class="svg-label" x="712" y="276" fill="var(--seal)" text-anchor="middle">精排 · Qwen3 Reranker</text>
+          <text class="svg-mono" x="712" y="294" fill="var(--seal)" text-anchor="middle" opacity=".85" style="font-size:11px">--no-rerank 跳过</text>
+        </svg>
+        <figcaption>砍掉精排不影响语义能力：语义匹配发生在第二段召回，精排只是对已召回的候选重新排序。在本机（无 GPU）跳过它，单次检索从 19 分 47 秒降到约 5 秒。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 11 ── 三种检索范式 ───────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>10</b> 三种检索范式</p>
+      <h2>同一个问题，三种问法</h2>
+      <p class="lede">实测于 2026-10-12，问的都是「房地产项目何时必须进行土地增值税清算」这件事。</p>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th>命令</th><th>机制</th><th>查询形态</th><th>结果</th><th class="num">耗时</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>qmd search</code></td>
+              <td>纯字面 · BM25</td>
+              <td>整句</td>
+              <td><span class="no">无结果</span></td>
+              <td class="num">0.48s</td>
+            </tr>
+            <tr>
+              <td><code>qmd search</code></td>
+              <td>纯字面 · BM25</td>
+              <td>关键词「土地增值税 清算」</td>
+              <td><span class="yes">命中 89%</span></td>
+              <td class="num">0.55s</td>
+            </tr>
+            <tr>
+              <td><code>qmd vsearch</code></td>
+              <td>纯语义 · 向量</td>
+              <td>整句</td>
+              <td><span class="yes">命中 75%</span></td>
+              <td class="num">22.8s<span class="dim"> 含冷加载</span></td>
+            </tr>
+            <tr>
+              <td><code>qmd query</code><br><span class="dim" style="font-size:.85em">--no-rerank</span></td>
+              <td>vec + lex · RRF</td>
+              <td>自写 vec + lex</td>
+              <td><span class="yes">命中 100%</span></td>
+              <td class="num">4.9s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols cols-2" style="margin-top:1.8rem">
+        <div class="note accent">
+          <b>检索回答问题 → 一律 <code>qmd query</code> 自写 vec + lex。</b>
+          这是本库的检索主力。<code>qmd search</code> 不在检索链上。
+        </div>
+        <div class="note">
+          <b>验证索引 → <code>search</code> 与 <code>vsearch</code> 各一次。</b>
+          「这个页面在不在索引里」本来就是字面问题，那里用字面匹配才对。
+        </div>
+      </div>
+      <p style="font-size:var(--fs-xs);color:var(--ink-3);margin:1.4rem 0 0">
+        ⚠ 三者的百分比不可互相比较——<code>search</code> 是 BM25 归一化分、<code>vsearch</code> 是余弦相似度、<code>query</code> 是融合分，口径不同。
+      </p>
+    </div>
+  </section>
+
+  <!-- 12 ── 降级链 ─────────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>11</b> 降级链</p>
+      <h2>后端失效时还有两级台阶</h2>
+      <p class="lede">检索不是单点依赖。官方 qmd 不可用时逐级下退，每一级都能独立回答问题。</p>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th class="num">级</th><th>后端</th><th>能力</th><th>代价</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">1</td>
+              <td><strong>官方 qmd</strong><br><span class="dim">当前生效</span></td>
+              <td>BM25 字面 + <strong>向量语义</strong> + RRF 融合</td>
+              <td>需运行时与 3 个模型文件</td>
+            </tr>
+            <tr>
+              <td class="num">2</td>
+              <td><strong>scripts/qmd-lite</strong><br><span class="dim">仓库自带</span></td>
+              <td>仅 BM25（含中文单字 + 双字切分）<span class="no">无向量</span></td>
+              <td>零依赖、纯 Python 标准库、即时可用</td>
+            </tr>
+            <tr>
+              <td class="num">3</td>
+              <td><strong>wiki/index.md</strong></td>
+              <td>人工浏览索引并挑选</td>
+              <td>无检索，靠人读</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:1.8rem">
+        <b>降级会丢掉什么：</b>只有第 1 级有向量。一旦退到 qmd-lite，
+        <strong style="color:var(--ink);font-weight:500">全部「换个说法也能找到」的语义召回能力消失</strong>，只剩下字面命中。
+        这是两代后端最本质的差别。
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 ── 组件与版本 ─────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>12</b> 组件清单 · 版本</p>
+      <h2>全部依赖与它们的版本</h2>
+      <p class="lede">实测于 2026-10-12。换机器重建时按此表取件。</p>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th style="width:22%">组件</th><th>版本 / 规格</th><th>角色</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>qmd</strong></td><td class="num">2.8.3 · <span class="dim">facd35e</span></td><td><code>@tobilu/qmd</code> · 检索后端</td></tr>
+            <tr><td><strong>Node.js</strong></td><td class="num">v22.22.1</td><td>qmd 的运行环境</td></tr>
+            <tr><td><strong>Python</strong></td><td class="num">3.12.14 · <span class="dim">项目 .venv</span><br>3.14.4 · <span class="dim">系统</span></td><td>lint.py · qmd-lite · ocr_pdf.py</td></tr>
+            <tr><td><strong>embed 模型</strong></td><td class="num">embeddinggemma-300M-Q8_0.gguf<br>318 MB · 768 维</td><td>语义引擎，每次检索都加载</td></tr>
+            <tr><td><strong>generate 模型</strong></td><td class="num">Qwen3-0.6B-Q8_0.gguf<br>767 MB</td><td>查询扩写，<span class="no">本库不加载</span></td></tr>
+            <tr><td><strong>rerank 模型</strong></td><td class="num">qwen3-reranker-0.6b-q8_0.gguf<br>610 MB</td><td>精排，<span class="no">本库不加载</span></td></tr>
+            <tr><td><strong>索引</strong></td><td class="num"><code>~/.cache/qmd/index.sqlite</code><br>SQLite · 44.9 MB · 5,259 块</td><td>集合 <code>wiki</code> 的向量与全文索引</td></tr>
+            <tr>
+              <td><strong>Obsidian 插件</strong></td>
+              <td class="num">Front Matter Title 4.2.1<br>Dataview 0.5.68 · Juggl 1.5.0<br>Marp Slides 0.46.1 · RealClaudian 2.3.17</td>
+              <td>图谱中文名 · 统计查询 · 关系图 · 幻灯片预览</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:var(--fs-xs);color:var(--ink-3);margin:1.1rem 0 0">
+        三个模型合计约 1.66 GB，全部在 <code>~/.cache/qmd/models/</code>。其中 <code>generate</code> 与 <code>rerank</code>
+        虽不运行，但必须留在配置里——不带 <code>--no-rerank</code> 时 qmd 会去加载它们。
+      </p>
+    </div>
+  </section>
+
+  <!-- 14 ── 操作契约 ───────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>13</b> 操作契约</p>
+      <h2>六条被写死的操作</h2>
+      <p class="lede">所有对知识库的改动都必须走这六条之一。每条都有明确的触发词、步骤与产物——这是行为的唯一权威规范。</p>
+      <div class="contracts">
+        <div class="contract">
+          <span class="n">01</span>
+          <div><h3>INGEST · 摄入</h3><p>把 raw/ 的新材料转成来源页 + 概念页。11 步，含算哈希、概念名称对齐、逐一与用户确认要点。</p></div>
+        </div>
+        <div class="contract">
+          <span class="n">02</span>
+          <div><h3>QUERY · 查询</h3><p>自写 vec + lex 检索 top 5，逐一读完再合成。每个结论必须溯源到来源页，不能只引概念页。</p></div>
+        </div>
+        <div class="contract">
+          <span class="n">03</span>
+          <div><h3>LINT · 健康检查</h3><p>跑 10 项检查（断链、索引一致性、哈希完整性、引用一致性…），出报告但绝不自动改页面。</p></div>
+        </div>
+        <div class="contract">
+          <span class="n">04</span>
+          <div><h3>REFLECT · 综合分析</h3><p>先反向搜寻反驳证据，再扫描跨来源模式，产出合成页与缺口报告。</p></div>
+        </div>
+        <div class="contract">
+          <span class="n">05</span>
+          <div><h3>MERGE · 合并</h3><p>同语言与跨语言两套流程。<strong>必须先与用户确认，绝不自动执行</strong>，旧页留 redirect 不断链。</p></div>
+        </div>
+        <div class="contract">
+          <span class="n">06</span>
+          <div><h3>ADD-QUESTION · 记问题</h3><p>把口语化疑问规范化成可回答的核心问题，追加到开放问题清单待日后来源解答。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 ── 质量机制 ───────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>14</b> 质量机制</p>
+      <h2>让错误无法静默存活</h2>
+      <p class="lede">这套系统的可信度不来自「写得多」，而来自几条刻意设计的约束——其中多数源自 llm-wiki 模式本身。</p>
+      <div class="cols cols-2">
+        <div class="panel">
+          <h3>① 不静默覆盖</h3>
+          <p>来源之间的矛盾必须显式记入 Contradictions 节，不允许用新结论悄悄盖掉旧的。
+             <strong style="color:var(--ink);font-weight:500">同一份材料内部自相矛盾也照录</strong>，不擅自取舍。</p>
+        </div>
+        <div class="panel">
+          <h3>② 来源独立性的粒度</h3>
+          <p><code>source_count</code> 只数去重后的 raw 文件——同一本书的不同章节不互相背书，
+             否则一份材料能自己给自己凑够三个来源，置信度就虚高了。</p>
+        </div>
+        <div class="panel">
+          <h3>③ 置信度需人工确认</h3>
+          <p>1 个来源 <code>low</code>、3+ <code>medium</code> 自动；到 5+ 且无重大矛盾时只是<strong style="color:var(--ink);font-weight:500">候选</strong> <code>high</code>——
+             须向用户展示定义与来源列表、得到明确确认才可设置。这是防「错误复利」的核心闸门。</p>
+        </div>
+        <div class="panel">
+          <h3>④ 引用一致性反向核对</h3>
+          <p>LINT 的第 10 项做「概念 → 来源」的反向核对：页面引用的来源，必须真的在其来源页登记过。
+             这是为了补上「页面存在但指错了书」这个断链与索引检查都看不见的洞。</p>
+        </div>
+      </div>
+      <p style="font-size:var(--fs-xs);color:var(--ink-3);margin:1.6rem 0 0">
+        最近一次完整 LINT（2026-10-08）：扫描 514 页，<strong style="color:var(--ink-2)">0 ERROR</strong> / 24 WARN / 72 INFO，WARN 与 INFO 全部为已裁定项。
+      </p>
+    </div>
+  </section>
+
+  <!-- 16 ── 收束 ───────────────────────────────────── -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow"><b>15</b> 收束</p>
+      <h2>一条原则贯穿全部</h2>
+      <p class="lede" style="max-width:56ch;font-size:1.05rem">
+        <strong style="color:var(--ink);font-weight:500">raw/ 是唯一事实来源</strong>——知识层的每一个结论，都必须能溯源到其中的具体文件。
+        其余一切设计（只读边界、来源独立性、不静默覆盖、引用反向核对）都是这条原则的推论。
+      </p>
+      <div class="cols cols-2" style="margin-top:2.4rem">
+        <div>
+          <h3 style="margin-bottom:.8rem">当前位置</h3>
+          <ul class="plain">
+            <li><b>CTA 教材 4 / 5 已摄入</b> — 税法一 · 税法二 · 涉税实务 · 涉税法律</li>
+            <li><b>下一步：《财务与会计》</b> — 510 页，尚未开始</li>
+            <li><b>制度语料约 4,886 篇</b> — 已入库待摄入</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin-bottom:.8rem">本页是什么</h3>
+          <ul class="plain">
+            <li>页面存放在 <code>outputs/kb-architecture.html</code></li>
+            <li>架构章节参照 <code>~/下载/LLM Wiki 搭建教程.pdf</code>（30 页）</li>
+            <li>规模数字实测于 <b>2026-10-12</b>，随摄入变动</li>
+            <li>行为规范的权威文本是仓库根目录的 <code>CLAUDE.md</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var bar = document.getElementById('bar');
+  var cur = document.getElementById('cur');
+  var tot = document.getElementById('tot');
+  var pad = function(n){ return String(n).length < 2 ? '0' + n : String(n); };
+
+  tot.textContent = pad(slides.length);
+
+  function currentIndex(){
+    var best = 0, bestDist = Infinity;
+    var mid = window.scrollY + window.innerHeight * 0.35;
+    for (var i = 0; i < slides.length; i++){
+      var d = Math.abs(slides[i].offsetTop - mid + slides[i].offsetHeight * 0.35);
+      if (d < bestDist){ bestDist = d; best = i; }
+    }
+    return best;
+  }
+
+  function paint(){
+    var i = currentIndex();
+    cur.textContent = pad(i + 1);
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  }
+
+  function go(i){
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start'
+    });
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown' || k === ' '){
+      e.preventDefault(); go(currentIndex() + 1);
+    } else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp'){
+      e.preventDefault(); go(currentIndex() - 1);
+    } else if (k === 'Home'){ e.preventDefault(); go(0); }
+    else if (k === 'End'){ e.preventDefault(); go(slides.length - 1); }
+  });
+
+  window.addEventListener('scroll', paint, { passive: true });
+  window.addEventListener('resize', paint);
+  paint();
+})();
+</script>

@@ -1,0 +1,40 @@
+# 检索索引（本地生成，可随时用 `python3 scripts/qmd-lite add wiki/` 重建）
+.qmd-lite/
+
+# Obsidian 工作区状态（保留 .obsidian/ 里的插件配置，忽略机器相关状态）
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------
+# 版权材料：本仓库为公开仓库，以下来源不得入库（2026-10-15 起）
+# ---------------------------------------------------------------
+# 2026 税务师教材 PDF（5 本，单本 112–202MB）
+# ⚠ GitHub 硬性拒收 >100MB 的单文件，且系商业教辅，公开再分发不当
+raw/pdfs/
+# 上述教材的 OCR 文本（教材的衍生内容）
+raw/教材/
+# 题库（教材配套习题、历年集中测试）
+raw/题库/
+# 网摘剪藏：第三方新闻全文（新华网、税屋等），公开仓库不宜再发布
+raw/clippings/04_网摘/
+
+# ---------------------------------------------------------------
+# 机器／会话本地状态（只对本机有意义，入库会污染他人环境）
+# ---------------------------------------------------------------
+.claudian/
+.claude/settings.local.json
+.ocr-state/
+# Obsidian 插件为第三方发行物（33MB，其中 marp-slides 占 23MB），按需自行安装；
+# 插件清单见 .obsidian/community-plugins.json
+.obsidian/plugins/
